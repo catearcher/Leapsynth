@@ -51,13 +51,17 @@ var LS = (function() {
             return hand.palmPosition[0];
           });
 
-
-          handleHand("left", hands[0]);
-
-          if (hands.length > 1) {
+          if (hands.length === 1) {
+            if (hands[0].stabilizedPalmPosition[0] < 0) {
+              handleHand("left", hands[0]);
+              handleHand("right", "clear");
+            } else {
+              handleHand("left", "clear");
+              handleHand("right", hands[0]);
+            }
+          } else if (hands.length > 1) {
+            handleHand("left", hands[0]);
             handleHand("right", hands[1]);
-          } else {
-            handleHand("right", "clear");
           }
         } else {
           handleHand("left", "clear");
