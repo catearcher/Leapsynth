@@ -31,9 +31,10 @@ var LS = (function() {
       $handPosition.empty();
       $fingers.empty()
     } else {
-      $handPosition.html(_.map(data.palmPosition, function(pos) {
+      $handPosition.html(_.map(data.stabilizedPalmPosition, function(pos) {
         return Math.round(pos);
       }).join(" / "));
+
       $fingers.html(data.fingers.length);
     }
 
