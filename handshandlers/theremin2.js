@@ -32,11 +32,11 @@ LSHandsHandlers.theremin2 = {
     });
 
     if (hands.left && hands.right) {
-      if (hands.left.fingers < 2) {
+      if (hands.left.isFist) {
         amplitude = 0;
       }
 
-      if (hands.right.fingers < 2) {
+      if (hands.right.isFist) {
         audio.vco.type = audio.vco.SAWTOOTH;
       } else {
         audio.vco.type = audio.vco.SINE;

@@ -100,7 +100,7 @@ var LS = (function() {
         return Math.round(pos);
       }),
       fingers: data.fingers.length,
-
+      isFist: data.fingers.length < 2
     };
   },
   initAudio = function() {
