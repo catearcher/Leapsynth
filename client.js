@@ -1,6 +1,10 @@
 var LS = (function() {
   var
   __isLeapEnabled = true,
+  __hands = {
+    left: null,
+    right: null
+  },
   enableLeap = function() {
     __isLeapEnabled = true;
   },
@@ -16,28 +20,39 @@ var LS = (function() {
       disableLeap();
     });
   },
-  handleHand = function(which, data) {
-    var $handPosition, $fingers;
-
-    if (which === "left") {
-      $handPosition = $("#left-hand-position");
-      $fingers = $("#left-hand-fingers");
-    } else {
-      $handPosition = $("#right-hand-position");
-      $fingers = $("#right-hand-fingers");
-    }
-
+  clearHand = function(which) {
+    __hands[which] = null;
+  },
+  updateHand = function(which, data) {
     if (data === "clear") {
-      $handPosition.empty();
-      $fingers.empty()
-    } else {
-      $handPosition.html(_.map(data.stabilizedPalmPosition, function(pos) {
-        return Math.round(pos);
-      }).join(" / "));
-
-      $fingers.html(data.fingers.length);
+      clearHand(which);
+      return;
     }
 
+    __hands[which] = {
+      position: _.map(data.stabilizedPalmPosition, function(pos) {
+        return Math.round(pos);
+      }).join(" / "),
+      fingers: data.fingers.length
+    };
+  },
+  handleHands = function() {
+    var $handPosition, $fingers, hand;
+
+    _.each(["left", "right"], function(which) {
+      hand = __hands[which];
+
+      $handPosition = $("#" + which + "-hand-position");
+      $fingers = $("#" + which + "-hand-fingers");
+
+      if (hand) {
+        $handPosition.html(hand.position);
+        $fingers.html(hand.fingers)
+      } else {
+        $handPosition.empty();
+        $fingers.empty();
+      }
+    });
   },
   init = function() {
     attachDomHandlers();
@@ -53,20 +68,22 @@ var LS = (function() {
 
           if (hands.length === 1) {
             if (hands[0].stabilizedPalmPosition[0] < 0) {
-              handleHand("left", hands[0]);
-              handleHand("right", "clear");
+              updateHand("left", hands[0]);
+              clearHand("right");
             } else {
-              handleHand("left", "clear");
-              handleHand("right", hands[0]);
+              clearHand("left");
+              updateHand("right", hands[0]);
             }
           } else if (hands.length > 1) {
-            handleHand("left", hands[0]);
-            handleHand("right", hands[1]);
+            updateHand("left", hands[0]);
+            updateHand("right", hands[1]);
           }
         } else {
-          handleHand("left", "clear");
-          handleHand("right", "clear");
+          clearHand("left");
+          clearHand("right");
         }
+
+        handleHands();
       }
     });
   };
