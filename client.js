@@ -52,6 +52,18 @@ var LS = (function() {
       __audio.output.connect(target);
     }
   },
+  activateHandsHandler = function(handlerId) {
+    var $panel = $("#handlers-panel");
+
+    __activeHandsHandler = LSHandsHandlers[handlerId];
+    $panel.attr("class", "panel");
+
+    if (__activeHandsHandler.color) {
+      $panel.addClass("panel-" + __activeHandsHandler.color);
+    }
+
+    $panel.find(".active-handler-name").text(__activeHandsHandler.name);
+  },
   enableLeap = function() {
     __isLeapEnabled = true;
   },
@@ -65,6 +77,10 @@ var LS = (function() {
 
     $(".button-disable-leap").on("click", function() {
       disableLeap();
+    });
+
+    $(document).on("click", ".switch-to-handler", function() {
+      activateHandsHandler($(this).attr("data-id"));
     });
   },
   clearHand = function(which) {
@@ -91,7 +107,20 @@ var LS = (function() {
   init = function() {
     initAudio();
     attachDomHandlers();
-    __activeHandsHandler = _.toArray(LSHandsHandlers)[0];
+    activateHandsHandler("theremin");
+
+    _.each(LSHandsHandlers, function(handler, key) {
+      var $button = $("<button>")
+         .addClass("btn switch-to-handler")
+         .attr("data-id", key)
+         .text(handler.name);
+
+      if (handler.color) {
+        $button.addClass("btn-" + handler.color)
+      }
+
+      $("#handshandlers").append($button).append(" ");
+    });
 
     Leap.loop({enableGestures: true}, function(frame) {
       var hands = frame.hands;

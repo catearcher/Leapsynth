@@ -1,6 +1,8 @@
 window.LSHandsHandlers = window.LSHandsHandlers || {};
 
 LSHandsHandlers.theremin = {
+  name: "Theremin",
+  color: "success",
   handleHands: function(hands, context) {
     var $handPosition, $fingers, hand, distance, amplitude, frequency;
 

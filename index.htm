@@ -4,6 +4,7 @@
 
   <link rel="stylesheet" href="libs/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="libs/bootstrap/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="client.css">
 
   <script src="libs/jquery-2.0.3.min.js"></script>
   <script src="libs/lodash.min.js"></script>
@@ -34,13 +35,12 @@
       </div>
     </div>
     <div class="col-sm-4">
-      <div class="panel panel-primary">
+      <div id="handlers-panel" class="panel panel-primary">
         <div class="panel-heading">
-          <h3 class="panel-title">Turn it on or off</h3>
+          <h3 class="panel-title">Active Handler: <span class="active-handler-name"></span></h3>
         </div>
         <div class="panel-body">
-          <button class="btn btn-success button-enable-leap">enable leap</button>
-          <button class="btn btn-danger button-disable-leap">disable leap</button>
+          <div id="handshandlers"></div>
         </div>
       </div>
     </div>
@@ -73,6 +73,7 @@
 </div>
 
 <script src="handshandlers/theremin.js"></script>
+<script src="handshandlers/silence.js"></script>
 <script src="client.js"></script>
 </body>
 </html>
