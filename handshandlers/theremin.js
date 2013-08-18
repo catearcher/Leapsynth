@@ -3,7 +3,7 @@ window.LSHandsHandlers = window.LSHandsHandlers || {};
 LSHandsHandlers.theremin = {
   name: "Theremin",
   color: "success",
-  handleHands: function(hands, context) {
+  handleHands: function(hands, audio) {
     var $handPosition, $fingers, hand, distance, amplitude, frequency;
 
     _.each(["left", "right"], function(which) {
@@ -33,21 +33,21 @@ LSHandsHandlers.theremin = {
 
     if (hands.left && hands.right) {
       if (hands.left.fingers >= 2) {
-        if (amplitude !== context.currentAmplitude) {
-          context.setAmplitude(amplitude);
+        if (amplitude !== audio.currentAmplitude) {
+          audio.setAmplitude(amplitude);
         }
       } else {
-        context.setAmplitude(0);
+        audio.setAmplitude(0);
       }
 
-      if (frequency !== context.currentFrequency) {
-        context.setFrequency(frequency);
+      if (frequency !== audio.currentFrequency) {
+        audio.setFrequency(frequency);
       }
 
       $("#note-frequency").html("Frequenz: " + frequency + "Hz");
       $("#note-amplitude").html("Amplitude: " + amplitude);
     } else {
-      context.silence();
+      audio.silence();
 
       $("#note-frequency").empty();
       $("#note-amplitude").empty();

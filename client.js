@@ -24,17 +24,21 @@ var LS = (function() {
       __audio.lfoGain.connect(__audio.vcf.frequency);
 
       __audio.output.gain.value = 0;
-      __audio.vco.type = __audio.vco.SAWTOOTH;
-      __audio.lfo.type = __audio.lfo.SAWTOOTH;
+      __audio.vco.type = __audio.vco.SINE;
+      __audio.lfo.type = __audio.lfo.SINE;
       __audio.vco.start(__audio.context.currentTime);
       __audio.lfo.start(__audio.context.currentTime);
 
       __audio.connect(context.destination);
     },
+    loadDefaults: function() {
+      __audio.vco.type = __audio.vco.SINE;
+      __audio.lfo.type = __audio.lfo.SINE;
+    },
     setAmplitude: function(value) {
       var time = __audio.context.currentTime;
 
-      __audio.output.gain.linearRampToValueAtTime(value, time + 0.1);
+      __audio.output.gain.linearRampToValueAtTime(value, time + 0.2);
       __audio.currentAmplitude = value;
     },
     setFrequency: function(frequency) {
@@ -53,6 +57,7 @@ var LS = (function() {
   activateHandsHandler = function(handlerId) {
     var $panel = $("#handlers-panel");
 
+    __audio.loadDefaults();
     __activeHandsHandler = LSHandsHandlers[handlerId];
     $panel.attr("class", "panel");
 
@@ -91,11 +96,11 @@ var LS = (function() {
     }
 
     __hands[which] = {
-      gestures: data.gestures,
       position: _.map(data.stabilizedPalmPosition, function(pos) {
         return Math.round(pos);
       }),
-      fingers: data.fingers.length
+      fingers: data.fingers.length,
+
     };
   },
   initAudio = function() {
@@ -106,7 +111,7 @@ var LS = (function() {
   init = function() {
     initAudio();
     attachDomHandlers();
-    activateHandsHandler("theremin");
+    activateHandsHandler("theremin2");
 
     _.each(LSHandsHandlers, function(handler, key) {
       var $button = $("<button>")
@@ -121,26 +126,10 @@ var LS = (function() {
       $("#handshandlers").append($button).append(" ");
     });
 
-    Leap.loop({enableGestures: true}, function(frame) {
-      var hands = frame.hands, gestures = [];
+    Leap.loop({enableGestures: false}, function(frame) {
+      var hands = frame.hands;
 
       if (__isLeapEnabled) {
-        if (frame.gestures.length) {
-          _.each(frame.gestures, function(gesture) {
-            _.each(gesture.handIds, function(handId) {
-              _.each(hands, function(hand, handIndex) {
-                if (hand.id === handId) {
-                  if (!_.isArray(hands[handIndex].gestures)) {
-                    hands[handIndex].gestures = [];
-                  }
-
-                  hands[handIndex].gestures.push(gesture);
-                }
-              });
-            });
-          });
-        }
-
         if (hands.length) {
           hands = _.sortBy(hands, function(hand) {
             return hand.palmPosition[0];
@@ -172,6 +161,7 @@ var LS = (function() {
   init();
 
   return {
-    init: init
+    init: init,
+    audio: __audio
   };
 }());
