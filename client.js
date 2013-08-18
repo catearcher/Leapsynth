@@ -37,15 +37,13 @@ var LS = (function() {
       __audio.output.gain.linearRampToValueAtTime(value, time + 0.1);
       __audio.currentAmplitude = value;
     },
-    noteOn: function(frequency) {
+    setFrequency: function(frequency) {
       var time = __audio.context.currentTime;
 
       __audio.vco.frequency.setValueAtTime(frequency, time);
       __audio.currentFrequency = frequency;
     },
-    noteOff: function() {
-      var time = __audio.context.currentTime;
-
+    silence: function() {
       __audio.setAmplitude(0);
     },
     connect: function(target) {

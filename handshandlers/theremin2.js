@@ -32,22 +32,22 @@ LSHandsHandlers.theremin2 = {
     });
 
     if (hands.left && hands.right) {
-      if (hands.left.fingers >= 2) {
-        if (amplitude !== context.currentAmplitude) {
-          context.setAmplitude(amplitude);
-        }
-      } else {
-        context.setAmplitude(0);
+      if (hands.left.fingers < 2) {
+        amplitude = 0;
       }
 
       if (frequency !== context.currentFrequency) {
-        context.noteOn(frequency);
+        context.setFrequency(frequency);
+      }
+
+      if (amplitude !== context.currentAmplitude) {
+        context.setAmplitude(amplitude);
       }
 
       $("#note-frequency").html("Frequenz: " + frequency + "Hz");
       $("#note-amplitude").html("Amplitude: " + amplitude);
     } else {
-      context.noteOff();
+      context.silence();
 
       $("#note-frequency").empty();
       $("#note-amplitude").empty();

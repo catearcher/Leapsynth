@@ -41,13 +41,13 @@ LSHandsHandlers.theremin = {
       }
 
       if (frequency !== context.currentFrequency) {
-        context.noteOn(frequency);
+        context.setFrequency(frequency);
       }
 
       $("#note-frequency").html("Frequenz: " + frequency + "Hz");
       $("#note-amplitude").html("Amplitude: " + amplitude);
     } else {
-      context.noteOff();
+      context.silence();
 
       $("#note-frequency").empty();
       $("#note-amplitude").empty();
