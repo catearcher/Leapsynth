@@ -22,8 +22,8 @@ LSHandsHandlers.theremin2 = {
           amplitude = 4 - (distance / 100);
           amplitude = Math.round(10*amplitude) / 10;
         } else {
-          frequency = 1000 - distance;
-          frequency = Math.round(frequency / 3);
+          frequency = 800 - distance;
+          frequency = Math.round(Math.pow(2, (frequency / 8 - 69) / 12) * 440);
         }
       } else {
         $handPosition.empty();
@@ -42,7 +42,7 @@ LSHandsHandlers.theremin2 = {
         audio.vco.type = audio.vco.SINE;
       }
 
-      // if (Math.floor(audio.context.currentTime * 100) % 8 !== 0) {
+      // if (Math.floor(audio.context.currentTime * 80) % 6 !== 0) {
       //   amplitude = 0;
       // }
 
