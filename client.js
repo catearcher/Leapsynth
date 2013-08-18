@@ -93,6 +93,7 @@ var LS = (function() {
     }
 
     __hands[which] = {
+      gestures: data.gestures,
       position: _.map(data.stabilizedPalmPosition, function(pos) {
         return Math.round(pos);
       }),
@@ -123,9 +124,25 @@ var LS = (function() {
     });
 
     Leap.loop({enableGestures: true}, function(frame) {
-      var hands = frame.hands;
+      var hands = frame.hands, gestures = [];
 
       if (__isLeapEnabled) {
+        if (frame.gestures.length) {
+          _.each(frame.gestures, function(gesture) {
+            _.each(gesture.handIds, function(handId) {
+              _.each(hands, function(hand, handIndex) {
+                if (hand.id === handId) {
+                  if (!_.isArray(hands[handIndex].gestures)) {
+                    hands[handIndex].gestures = [];
+                  }
+
+                  hands[handIndex].gestures.push(gesture);
+                }
+              });
+            });
+          });
+        }
+
         if (hands.length) {
           hands = _.sortBy(hands, function(hand) {
             return hand.palmPosition[0];
