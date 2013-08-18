@@ -5,6 +5,7 @@ var LS = (function() {
     left: null,
     right: null
   },
+  __activeHandsHandler = null,
   __audio = {
     currentAmplitude: null,
     currentFrequency: null,
@@ -82,56 +83,6 @@ var LS = (function() {
       fingers: data.fingers.length
     };
   },
-  handleHands = function() {
-    var $handPosition, $fingers, hand, distance, amplitude, frequency;
-
-    _.each(["left", "right"], function(which) {
-      hand = __hands[which];
-
-      $handPosition = $("#" + which + "-hand-position");
-      $fingers = $("#" + which + "-hand-fingers");
-
-      if (hand) {
-        $handPosition.html("Position der Hand: " + hand.position.join(" / "));
-        $fingers.html("Anzahl der Finger: " + hand.fingers);
-
-        distance = hand.position[1];
-
-        if (which === "left") {
-          amplitude = 4 - (distance / 100);
-          amplitude = Math.round(10*amplitude) / 10;
-        } else {
-          frequency = 1000 - distance;
-          frequency = Math.round(frequency);
-        }
-      } else {
-        $handPosition.empty();
-        $fingers.empty();
-      }
-    });
-
-    if (__hands.left && __hands.right) {
-      if (__hands.left.fingers >= 2) {
-        if (amplitude !== __audio.currentAmplitude) {
-          __audio.setAmplitude(amplitude);
-        }
-      } else {
-        __audio.setAmplitude(0);
-      }
-
-      if (frequency !== __audio.currentFrequency) {
-        __audio.noteOn(frequency);
-      }
-
-      $("#note-frequency").html("Frequenz: " + frequency + "Hz");
-      $("#note-amplitude").html("Amplitude: " + amplitude);
-    } else {
-      __audio.noteOff();
-
-      $("#note-frequency").empty();
-      $("#note-amplitude").empty();
-    }
-  },
   initAudio = function() {
     window.AudioContext = window.AudioContext||window.webkitAudioContext;
 
@@ -140,6 +91,7 @@ var LS = (function() {
   init = function() {
     initAudio();
     attachDomHandlers();
+    __activeHandsHandler = _.toArray(LSHandsHandlers)[0];
 
     Leap.loop({enableGestures: true}, function(frame) {
       var hands = frame.hands;
@@ -167,7 +119,7 @@ var LS = (function() {
           clearHand("right");
         }
 
-        handleHands();
+        __activeHandsHandler.handleHands(__hands, __audio);
       }
     });
   };
@@ -176,18 +128,6 @@ var LS = (function() {
   init();
 
   return {
-    init: init,
-    enableLeap: enableLeap,
-    disableLeap: disableLeap,
-    amp: function(value) {
-      __audio.setAmplitude(value);
-    },
-    note: function(frequency) {
-      if (frequency) {
-        __audio.noteOn(frequency);
-      } else {
-        __audio.noteOff();
-      }
-    }
+    init: init
   };
 }());
