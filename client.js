@@ -111,7 +111,7 @@ var LS = (function() {
   init = function() {
     initAudio();
     attachDomHandlers();
-    activateHandsHandler("theremin2");
+    activateHandsHandler("tpain");
 
     _.each(LSHandsHandlers, function(handler, key) {
       var $button = $("<button>")
