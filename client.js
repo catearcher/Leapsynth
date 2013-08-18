@@ -5,6 +5,49 @@ var LS = (function() {
     left: null,
     right: null
   },
+  __audio = {
+    init: function(context) {
+      __audio.context = context;
+
+      __audio.vco = context.createOscillator();
+      __audio.lfo = context.createOscillator();
+      __audio.lfoGain = context.createGain();
+      __audio.vcf = context.createBiquadFilter();
+      __audio.output = context.createGain();
+
+      __audio.vco.connect(__audio.vcf);
+      __audio.vcf.connect(__audio.output);
+      __audio.lfo.connect(__audio.lfoGain);
+      __audio.lfoGain.connect(__audio.vcf.frequency);
+
+      __audio.output.gain.value = 0;
+      __audio.vco.type = __audio.vco.SAWTOOTH;
+      __audio.lfo.type = __audio.lfo.SAWTOOTH;
+      __audio.vco.start(__audio.context.currentTime);
+      __audio.lfo.start(__audio.context.currentTime);
+
+      __audio.connect(context.destination);
+    },
+    setAmplitude: function(value) {
+      var time = __audio.context.currentTime;
+
+      __audio.output.gain.linearRampToValueAtTime(value, time + 0.1);
+    },
+    noteOn: function(frequency) {
+      var time = __audio.context.currentTime;
+
+      __audio.vco.frequency.setValueAtTime(frequency, time);
+      __audio.setAmplitude(1);
+    },
+    noteOff: function() {
+      var time = __audio.context.currentTime;
+
+      __audio.setAmplitude(0);
+    },
+    connect: function(target) {
+      __audio.output.connect(target);
+    }
+  },
   enableLeap = function() {
     __isLeapEnabled = true;
   },
@@ -54,7 +97,13 @@ var LS = (function() {
       }
     });
   },
+  initAudio = function() {
+    window.AudioContext = window.AudioContext||window.webkitAudioContext;
+
+    __audio.init(new AudioContext());
+  },
   init = function() {
+    initAudio();
     attachDomHandlers();
 
     Leap.loop({enableGestures: true}, function(frame) {
@@ -94,6 +143,16 @@ var LS = (function() {
   return {
     init: init,
     enableLeap: enableLeap,
-    disableLeap: disableLeap
+    disableLeap: disableLeap,
+    amp: function(value) {
+      __audio.setAmplitude(value);
+    },
+    note: function(frequency) {
+      if (frequency) {
+        __audio.noteOn(frequency);
+      } else {
+        __audio.noteOff();
+      }
+    }
   };
 }());
