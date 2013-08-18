@@ -6,6 +6,8 @@ var LS = (function() {
     right: null
   },
   __audio = {
+    currentAmplitude: null,
+    currentFrequency: null,
     init: function(context) {
       __audio.context = context;
 
@@ -32,12 +34,13 @@ var LS = (function() {
       var time = __audio.context.currentTime;
 
       __audio.output.gain.linearRampToValueAtTime(value, time + 0.1);
+      __audio.currentAmplitude = value;
     },
     noteOn: function(frequency) {
       var time = __audio.context.currentTime;
 
       __audio.vco.frequency.setValueAtTime(frequency, time);
-      __audio.setAmplitude(1);
+      __audio.currentFrequency = frequency;
     },
     noteOff: function() {
       var time = __audio.context.currentTime;
@@ -75,12 +78,12 @@ var LS = (function() {
     __hands[which] = {
       position: _.map(data.stabilizedPalmPosition, function(pos) {
         return Math.round(pos);
-      }).join(" / "),
+      }),
       fingers: data.fingers.length
     };
   },
   handleHands = function() {
-    var $handPosition, $fingers, hand;
+    var $handPosition, $fingers, hand, distance, amplitude, frequency;
 
     _.each(["left", "right"], function(which) {
       hand = __hands[which];
@@ -89,13 +92,41 @@ var LS = (function() {
       $fingers = $("#" + which + "-hand-fingers");
 
       if (hand) {
-        $handPosition.html(hand.position);
-        $fingers.html(hand.fingers)
+        $handPosition.html("Position der Hand: " + hand.position.join(" / "));
+        $fingers.html("Anzahl der Finger: " + hand.fingers);
+
+        distance = hand.position[1];
+
+        if (which === "left") {
+          amplitude = 4 - (distance / 100);
+          amplitude = Math.round(10*amplitude) / 10;
+        } else {
+          frequency = 1000 - distance;
+          frequency = Math.round(frequency);
+        }
       } else {
         $handPosition.empty();
         $fingers.empty();
       }
     });
+
+    if (__hands.left && __hands.right) {
+      if (amplitude !== __audio.currentAmplitude) {
+        __audio.setAmplitude(amplitude);
+      }
+
+      if (frequency !== __audio.currentFrequency) {
+        __audio.noteOn(frequency);
+      }
+
+      $("#note-frequency").html("Frequenz: " + frequency + "Hz");
+      $("#note-amplitude").html("Amplitude: " + amplitude);
+    } else {
+      __audio.noteOff();
+
+      $("#note-frequency").empty();
+      $("#note-amplitude").empty();
+    }
   },
   initAudio = function() {
     window.AudioContext = window.AudioContext||window.webkitAudioContext;
