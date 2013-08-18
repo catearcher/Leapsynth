@@ -111,8 +111,12 @@ var LS = (function() {
     });
 
     if (__hands.left && __hands.right) {
-      if (amplitude !== __audio.currentAmplitude) {
-        __audio.setAmplitude(amplitude);
+      if (__hands.left.fingers >= 2) {
+        if (amplitude !== __audio.currentAmplitude) {
+          __audio.setAmplitude(amplitude);
+        }
+      } else {
+        __audio.setAmplitude(0);
       }
 
       if (frequency !== __audio.currentFrequency) {
