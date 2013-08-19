@@ -103,16 +103,7 @@ var LS = (function() {
       isFist: data.fingers.length < 2
     };
   },
-  initAudio = function() {
-    window.AudioContext = window.AudioContext||window.webkitAudioContext;
-
-    __audio.init(new AudioContext());
-  },
-  init = function() {
-    initAudio();
-    attachDomHandlers();
-    activateHandsHandler("tpain");
-
+  createHandsHandlersButtons = function() {
     _.each(LSHandsHandlers, function(handler, key) {
       var $button = $("<button>")
          .addClass("btn switch-to-handler")
@@ -125,6 +116,17 @@ var LS = (function() {
 
       $("#handshandlers").append($button).append(" ");
     });
+  },
+  initAudio = function() {
+    window.AudioContext = window.AudioContext||window.webkitAudioContext;
+
+    __audio.init(new AudioContext());
+  },
+  init = function() {
+    initAudio();
+    attachDomHandlers();
+    activateHandsHandler("tpain");
+    createHandsHandlersButtons();
 
     Leap.loop({enableGestures: false}, function(frame) {
       var hands = frame.hands;
