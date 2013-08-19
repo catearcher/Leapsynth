@@ -2,6 +2,7 @@ window.LSInstruments = window.LSInstruments || {};
 
 LSInstruments.leapmotion = {
   name: "Leap Motion",
+  description: "Play LeapSynth the way it was meant to be played: With a Leap Motion Controller.",
   color: "success",
   init: function(context) {
     var

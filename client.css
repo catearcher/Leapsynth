@@ -2,3 +2,7 @@
 .active-instrument-name {
   font-weight: bold;
 }
+
+.description {
+  margin-top: 10px;
+}

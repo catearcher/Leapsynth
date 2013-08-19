@@ -66,6 +66,7 @@ var LS = (function() {
     }
 
     $panel.find(".active-handler-name").text(__activeHandsHandler.name);
+    $panel.find("#handshandler-description").text(__activeHandsHandler.description);
   },
   activeateInstrument = function(instrumentId) {
     var $panel = $("#instruments-panel");
@@ -92,6 +93,7 @@ var LS = (function() {
     }
 
     $panel.find(".active-instrument-name").text(__activeInstrument.name);
+    $panel.find("#instrument-description").text(__activeInstrument.description);
   },
   attachDomHandlers = function() {
     $(".button-enable-leap").on("click", function() {

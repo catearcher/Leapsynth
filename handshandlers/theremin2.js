@@ -2,6 +2,7 @@ window.LSHandsHandlers = window.LSHandsHandlers || {};
 
 LSHandsHandlers.theremin2 = {
   name: "Theremin 2.0",
+  description: "An improved version of the LeapSynth Teremin. Offers a much wider spectrum of possible frequencies. If you close your right hand, you change the waveform of the oscillator.",
   color: "success",
   handleHands: function(hands, audio) {
     var $handPosition, $fingers, hand, distance, amplitude, frequency;

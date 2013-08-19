@@ -2,6 +2,7 @@ window.LSHandsHandlers = window.LSHandsHandlers || {};
 
 LSHandsHandlers.theremin = {
   name: "Theremin",
+  description: "The first LeapSynth synthesizer. A little rough around the edges, but it works.",
   color: "success",
   handleHands: function(hands, audio) {
     var $handPosition, $fingers, hand, distance, amplitude, frequency;

@@ -2,6 +2,7 @@ window.LSHandsHandlers = window.LSHandsHandlers || {};
 
 LSHandsHandlers.tpain = {
   name: "T-Pain",
+  description: "Leap it like T-Pain! This hands handler makes it impossible to play nonstandard notes.",
   color: "warning",
   handleHands: function(hands, audio) {
     var
