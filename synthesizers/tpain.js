@@ -63,6 +63,8 @@ LSsynthesizers.tpain = {
       ["E7", 2637.02]
     ];
 
+    audio.vcf.frequency.value = 230;
+
     _.each(["left", "right"], function(which) {
       var i;
 
@@ -107,6 +109,12 @@ LSsynthesizers.tpain = {
     if (hands.left && hands.right) {
       if (hands.left.isFist) {
         amplitude = 0;
+      }
+
+      if (hands.right.isFist) {
+        audio.lfoGain.gain.value = 150;
+      } else {
+        audio.lfoGain.gain.value = audio.lfoGain.gain.defaultValue;
       }
 
       if (frequency !== audio.currentFrequency) {

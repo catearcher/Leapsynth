@@ -24,8 +24,7 @@ var LS = (function() {
       __audio.lfoGain.connect(__audio.vcf.frequency);
 
       __audio.output.gain.value = 0;
-      __audio.vco.type = __audio.vco.SINE;
-      __audio.lfo.type = __audio.lfo.SINE;
+
       __audio.vco.start(__audio.context.currentTime);
       __audio.lfo.start(__audio.context.currentTime);
 
@@ -34,6 +33,8 @@ var LS = (function() {
     loadDefaults: function() {
       __audio.vco.type = __audio.vco.SINE;
       __audio.lfo.type = __audio.lfo.SINE;
+      __audio.vcf.frequency.value = __audio.vcf.frequency.defaultValue;
+      __audio.lfoGain.gain.value = __audio.lfoGain.gain.defaultValue;
     },
     setAmplitude: function(value) {
       var time = __audio.context.currentTime;
