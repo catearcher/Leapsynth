@@ -54,7 +54,7 @@ var LS = (function() {
       __audio.output.connect(target);
     }
   },
-  activateHandsHandler = function(handlerId) {
+  activateSynthesizer = function(handlerId) {
     var $panel = $("#synthesizers-panel");
 
     __audio.loadDefaults();
@@ -68,7 +68,7 @@ var LS = (function() {
     $panel.find(".active-synthesizer-name").text(__activeSynthesizer.name);
     $panel.find("#synthesizer-description").text(__activeSynthesizer.description);
   },
-  activeateInstrument = function(instrumentId) {
+  activateInstrument = function(instrumentId) {
     var $panel = $("#instruments-panel");
 
     if (__activeInstrument) {
@@ -105,7 +105,11 @@ var LS = (function() {
     });
 
     $(document).on("click", ".switch-to-handler", function() {
-      activateHandsHandler($(this).attr("data-id"));
+      activateSynthesizer($(this).attr("data-id"));
+    });
+
+    $(document).on("click", ".switch-to-instrument", function() {
+      activateInstrument($(this).attr("data-id"));
     });
   },
   clearHand = function(which) {
@@ -117,13 +121,7 @@ var LS = (function() {
       return;
     }
 
-    __hands[which] = {
-      position: _.map(data.stabilizedPalmPosition, function(pos) {
-        return Math.round(pos);
-      }),
-      fingers: data.fingers.length,
-      isFist: data.fingers.length < 2
-    };
+    __hands[which] = data;
   },
   createInstrumentsButtons = function() {
     _.each(LSInstruments, function(instrument, key) {
@@ -163,8 +161,8 @@ var LS = (function() {
     attachDomHandlers();
     createsynthesizersButtons();
     createInstrumentsButtons();
-    activateHandsHandler("tpain");
-    activeateInstrument("leapmotion");
+    activateSynthesizer("tpain");
+    activateInstrument("leapmotion");
   };
 
 

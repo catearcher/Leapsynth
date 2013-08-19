@@ -1,44 +1,62 @@
 window.LSInstruments = window.LSInstruments || {};
 
-LSInstruments.leapmotion = {
-  name: "Leap Motion",
-  description: "Play LeapSynth the way it was meant to be played: With a Leap Motion Controller.",
-  color: "success",
-  init: function(context) {
-    var
-    leapController = new Leap.Controller({enableGestures: false}),
-    updateHand = context.updateHand,
-    clearHand = context.clearHand,
-    handsHandler = context.handsHandler;
+(function() {
+  var leapController;
 
-    leapController.on("frame", function(frame) {
-      var hands = frame.hands;
+  LSInstruments.leapmotion = {
+    name: "Leap Motion",
+    description: "Play LeapSynth the way it was meant to be played: With a Leap Motion Controller.",
+    color: "success",
+    init: function(context) {
+      var
+      updateHand = context.updateHand,
+      clearHand = context.clearHand;
 
-      if (hands.length) {
-        hands = _.sortBy(hands, function(hand) {
-          return hand.palmPosition[0];
-        });
+      window.lc = leapController = new Leap.Controller({enableGestures: false});
 
-        if (hands.length === 1) {
-          if (hands[0].stabilizedPalmPosition[0] < 0) {
+      leapController.on("frame", function(frame) {
+        var hands = [];
+
+        if (frame.hands.length) {
+          frame.hands = _.sortBy(frame.hands, function(hand) {
+            return hand.stabilizedPalmPosition[0];
+          });
+
+          _.each(frame.hands, function(hand) {
+            hands.push({
+              position: _.map(hand.stabilizedPalmPosition, function(pos) {
+                return Math.round(pos);
+              }),
+              fingers: hand.fingers.length,
+              isFist: hand.fingers.length < 2
+            });
+          });
+
+          if (hands.length === 1) {
+            if (hands[0].position[0] < 0) {
+              updateHand("left", hands[0]);
+              clearHand("right");
+            } else {
+              clearHand("left");
+              updateHand("right", hands[0]);
+            }
+          } else if (hands.length > 1) {
             updateHand("left", hands[0]);
-            clearHand("right");
-          } else {
-            clearHand("left");
-            updateHand("right", hands[0]);
+            updateHand("right", hands[1]);
           }
-        } else if (hands.length > 1) {
-          updateHand("left", hands[0]);
-          updateHand("right", hands[1]);
+        } else {
+          clearHand("left");
+          clearHand("right");
         }
-      } else {
-        clearHand("left");
-        clearHand("right");
-      }
 
-      $(document).trigger("handsChange");
-    });
+        $(document).trigger("handsChange");
+      });
 
-    leapController.connect();
-  }
-};
+      leapController.connect();
+    },
+    destroy: function() {
+      leapController.disconnect();
+      leapController._events.frame = null; // nötiger Hack wegen auto-reconnect
+    }
+  };
+}());
