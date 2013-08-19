@@ -121,6 +121,8 @@ var LS = (function() {
       return;
     }
 
+    data.isFist = data.fingers < 2;
+
     __hands[which] = data;
   },
   createInstrumentsButtons = function() {

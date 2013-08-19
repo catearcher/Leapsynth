@@ -27,8 +27,7 @@ window.LSInstruments = window.LSInstruments || {};
               position: _.map(hand.stabilizedPalmPosition, function(pos) {
                 return Math.round(pos);
               }),
-              fingers: hand.fingers.length,
-              isFist: hand.fingers.length < 2
+              fingers: hand.fingers.length
             });
           });
 
