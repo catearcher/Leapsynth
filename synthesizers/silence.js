@@ -1,6 +1,6 @@
-window.LSHandsHandlers = window.LSHandsHandlers || {};
+window.LSsynthesizers = window.LSsynthesizers || {};
 
-LSHandsHandlers.silence = {
+LSsynthesizers.silence = {
   name: "Silence",
   description: "Nothing but silence.",
   color: "danger",

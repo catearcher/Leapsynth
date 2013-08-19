@@ -4,7 +4,7 @@ var LS = (function() {
     left: null,
     right: null
   },
-  __activeHandsHandler = null,
+  __activeSynthesizer = null,
   __activeInstrument = null,
   __audio = {
     currentAmplitude: null,
@@ -55,18 +55,18 @@ var LS = (function() {
     }
   },
   activateHandsHandler = function(handlerId) {
-    var $panel = $("#handlers-panel");
+    var $panel = $("#synthesizers-panel");
 
     __audio.loadDefaults();
-    __activeHandsHandler = LSHandsHandlers[handlerId];
+    __activeSynthesizer = LSsynthesizers[handlerId];
     $panel.attr("class", "panel");
 
-    if (__activeHandsHandler.color) {
-      $panel.addClass("panel-" + __activeHandsHandler.color);
+    if (__activeSynthesizer.color) {
+      $panel.addClass("panel-" + __activeSynthesizer.color);
     }
 
-    $panel.find(".active-handler-name").text(__activeHandsHandler.name);
-    $panel.find("#handshandler-description").text(__activeHandsHandler.description);
+    $panel.find(".active-synthesizer-name").text(__activeSynthesizer.name);
+    $panel.find("#synthesizer-description").text(__activeSynthesizer.description);
   },
   activeateInstrument = function(instrumentId) {
     var $panel = $("#instruments-panel");
@@ -83,7 +83,7 @@ var LS = (function() {
     });
 
     $(document).on("handsChange", function() {
-      __activeHandsHandler.handleHands(__hands, __audio);
+      __activeSynthesizer.handleHands(__hands, __audio);
     });
 
     $panel.attr("class", "panel");
@@ -139,8 +139,8 @@ var LS = (function() {
       $("#instruments").append($button).append(" ");
     });
   },
-  createHandsHandlersButtons = function() {
-    _.each(LSHandsHandlers, function(handler, key) {
+  createsynthesizersButtons = function() {
+    _.each(LSsynthesizers, function(handler, key) {
       var $button = $("<button>")
          .addClass("btn switch-to-handler")
          .attr("data-id", key)
@@ -150,7 +150,7 @@ var LS = (function() {
         $button.addClass("btn-" + handler.color)
       }
 
-      $("#handshandlers").append($button).append(" ");
+      $("#synthesizers").append($button).append(" ");
     });
   },
   initAudio = function() {
@@ -161,7 +161,7 @@ var LS = (function() {
   init = function() {
     initAudio();
     attachDomHandlers();
-    createHandsHandlersButtons();
+    createsynthesizersButtons();
     createInstrumentsButtons();
     activateHandsHandler("tpain");
     activeateInstrument("leapmotion");

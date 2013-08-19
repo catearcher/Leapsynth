@@ -1,6 +1,6 @@
-window.LSHandsHandlers = window.LSHandsHandlers || {};
+window.LSsynthesizers = window.LSsynthesizers || {};
 
-LSHandsHandlers.theremin = {
+LSsynthesizers.theremin = {
   name: "Theremin",
   description: "The first LeapSynth synthesizer. A little rough around the edges, but it works.",
   color: "success",

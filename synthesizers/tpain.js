@@ -1,8 +1,8 @@
-window.LSHandsHandlers = window.LSHandsHandlers || {};
+window.LSsynthesizers = window.LSsynthesizers || {};
 
-LSHandsHandlers.tpain = {
+LSsynthesizers.tpain = {
   name: "T-Pain",
-  description: "Leap it like T-Pain! This hands handler makes it impossible to play nonstandard notes.",
+  description: "Leap it like T-Pain! This synthesizer makes it impossible to play nonstandard notes.",
   color: "warning",
   handleHands: function(hands, audio) {
     var
