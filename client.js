@@ -1,6 +1,5 @@
 var LS = (function() {
   var
-  __isLeapEnabled = true,
   __hands = {
     left: null,
     right: null
@@ -67,12 +66,6 @@ var LS = (function() {
 
     $panel.find(".active-handler-name").text(__activeHandsHandler.name);
   },
-  enableLeap = function() {
-    __isLeapEnabled = true;
-  },
-  disableLeap = function() {
-    __isLeapEnabled = false;
-  },
   attachDomHandlers = function() {
     $(".button-enable-leap").on("click", function() {
       enableLeap();
@@ -131,31 +124,29 @@ var LS = (function() {
     Leap.loop({enableGestures: false}, function(frame) {
       var hands = frame.hands;
 
-      if (__isLeapEnabled) {
-        if (hands.length) {
-          hands = _.sortBy(hands, function(hand) {
-            return hand.palmPosition[0];
-          });
+      if (hands.length) {
+        hands = _.sortBy(hands, function(hand) {
+          return hand.palmPosition[0];
+        });
 
-          if (hands.length === 1) {
-            if (hands[0].stabilizedPalmPosition[0] < 0) {
-              updateHand("left", hands[0]);
-              clearHand("right");
-            } else {
-              clearHand("left");
-              updateHand("right", hands[0]);
-            }
-          } else if (hands.length > 1) {
+        if (hands.length === 1) {
+          if (hands[0].stabilizedPalmPosition[0] < 0) {
             updateHand("left", hands[0]);
-            updateHand("right", hands[1]);
+            clearHand("right");
+          } else {
+            clearHand("left");
+            updateHand("right", hands[0]);
           }
-        } else {
-          clearHand("left");
-          clearHand("right");
+        } else if (hands.length > 1) {
+          updateHand("left", hands[0]);
+          updateHand("right", hands[1]);
         }
-
-        __activeHandsHandler.handleHands(__hands, __audio);
+      } else {
+        clearHand("left");
+        clearHand("right");
       }
+
+      __activeHandsHandler.handleHands(__hands, __audio);
     });
   };
 
