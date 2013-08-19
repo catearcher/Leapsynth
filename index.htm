@@ -23,7 +23,30 @@
   </div>
 
   <div class="row">
-    <div class="col-sm-4">
+    <div class="col-md-6">
+      <div id="handlers-panel" class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Active Handler: <span class="active-handler-name"></span></h3>
+        </div>
+        <div class="panel-body">
+          <div id="handshandlers"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div id="instruments-panel" class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Active Instrument: <span class="active-instrument-name"></span></h3>
+        </div>
+        <div class="panel-body">
+          <div id="instruments"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
       <div class="panel">
         <div class="panel-heading">
           <h3 class="panel-title">Left Hand</h3>
@@ -34,31 +57,7 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-4">
-      <div id="handlers-panel" class="panel panel-primary">
-        <div class="panel-heading">
-          <h3 class="panel-title">Active Handler: <span class="active-handler-name"></span></h3>
-        </div>
-        <div class="panel-body">
-          <div id="handshandlers"></div>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-4">
-      <div class="panel">
-        <div class="panel-heading">
-          <h3 class="panel-title">Right Hand</h3>
-        </div>
-        <div class="panel-body">
-          <div id="right-hand-position"></div>
-          <div id="right-hand-fingers"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-12">
+    <div class="col-md-4">
       <div class="panel panel-success">
         <div class="panel-heading">
           <h3 class="panel-title">Sound</h3>
@@ -66,6 +65,17 @@
         <div class="panel-body">
           <div id="note-frequency"></div>
           <div id="note-amplitude"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="panel">
+        <div class="panel-heading">
+          <h3 class="panel-title">Right Hand</h3>
+        </div>
+        <div class="panel-body">
+          <div id="right-hand-position"></div>
+          <div id="right-hand-fingers"></div>
         </div>
       </div>
     </div>

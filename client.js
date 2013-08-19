@@ -68,6 +68,8 @@ var LS = (function() {
     $panel.find(".active-handler-name").text(__activeHandsHandler.name);
   },
   activeateInstrument = function(instrumentId) {
+    var $panel = $("#instruments-panel");
+
     if (__activeInstrument) {
       __activeInstrument.destroy();
       $(document).off("handsChange");
@@ -82,6 +84,14 @@ var LS = (function() {
     $(document).on("handsChange", function() {
       __activeHandsHandler.handleHands(__hands, __audio);
     });
+
+    $panel.attr("class", "panel");
+
+    if (__activeInstrument.color) {
+      $panel.addClass("panel-" + __activeInstrument.color);
+    }
+
+    $panel.find(".active-instrument-name").text(__activeInstrument.name);
   },
   attachDomHandlers = function() {
     $(".button-enable-leap").on("click", function() {
@@ -114,7 +124,18 @@ var LS = (function() {
     };
   },
   createInstrumentsButtons = function() {
+    _.each(LSInstruments, function(instrument, key) {
+      var $button = $("<button>")
+         .addClass("btn switch-to-instrument")
+         .attr("data-id", key)
+         .text(instrument.name);
 
+      if (instrument.color) {
+        $button.addClass("btn-" + instrument.color)
+      }
+
+      $("#instruments").append($button).append(" ");
+    });
   },
   createHandsHandlersButtons = function() {
     _.each(LSHandsHandlers, function(handler, key) {

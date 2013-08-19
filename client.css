@@ -1,3 +1,4 @@
-.active-handler-name {
+.active-handler-name,
+.active-instruments-name {
   font-weight: bold;
 }
