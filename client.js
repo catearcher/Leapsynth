@@ -5,6 +5,7 @@ var LS = (function() {
     right: null
   },
   __activeHandsHandler = null,
+  __activeInstrument = null,
   __audio = {
     currentAmplitude: null,
     currentFrequency: null,
@@ -66,6 +67,22 @@ var LS = (function() {
 
     $panel.find(".active-handler-name").text(__activeHandsHandler.name);
   },
+  activeateInstrument = function(instrumentId) {
+    if (__activeInstrument) {
+      __activeInstrument.destroy();
+      $(document).off("handsChange");
+    }
+
+    __activeInstrument = LSInstruments[instrumentId];
+    __activeInstrument.init({
+      "updateHand": updateHand,
+      "clearHand": clearHand
+    });
+
+    $(document).on("handsChange", function() {
+      __activeHandsHandler.handleHands(__hands, __audio);
+    });
+  },
   attachDomHandlers = function() {
     $(".button-enable-leap").on("click", function() {
       enableLeap();
@@ -96,6 +113,9 @@ var LS = (function() {
       isFist: data.fingers.length < 2
     };
   },
+  createInstrumentsButtons = function() {
+
+  },
   createHandsHandlersButtons = function() {
     _.each(LSHandsHandlers, function(handler, key) {
       var $button = $("<button>")
@@ -116,42 +136,12 @@ var LS = (function() {
     __audio.init(new AudioContext());
   },
   init = function() {
-    var leapController = new Leap.Controller({enableGestures: false});
-
     initAudio();
     attachDomHandlers();
-    activateHandsHandler("tpain");
     createHandsHandlersButtons();
-
-    leapController.on("frame", function(frame) {
-      var hands = frame.hands;
-
-      if (hands.length) {
-        hands = _.sortBy(hands, function(hand) {
-          return hand.palmPosition[0];
-        });
-
-        if (hands.length === 1) {
-          if (hands[0].stabilizedPalmPosition[0] < 0) {
-            updateHand("left", hands[0]);
-            clearHand("right");
-          } else {
-            clearHand("left");
-            updateHand("right", hands[0]);
-          }
-        } else if (hands.length > 1) {
-          updateHand("left", hands[0]);
-          updateHand("right", hands[1]);
-        }
-      } else {
-        clearHand("left");
-        clearHand("right");
-      }
-
-      __activeHandsHandler.handleHands(__hands, __audio);
-    });
-
-    leapController.connect();
+    createInstrumentsButtons();
+    activateHandsHandler("tpain");
+    activeateInstrument("leapmotion");
   };
 
 
