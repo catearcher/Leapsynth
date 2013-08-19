@@ -1,9 +1,9 @@
 window.LSsynthesizers = window.LSsynthesizers || {};
 
-LSsynthesizers.tpain = {
+LSsynthesizers.tpainevil = {
   name: "Evil T-Pain",
-  description: "Leap it like T-Pain! This synthesizer makes it impossible to play nonstandard notes.",
-  color: "warning",
+  description: "Like T-Pain, but with an evil mode if you close your right hand.",
+  color: "danger",
   handleHands: function(hands, audio) {
     var
     $handPosition, $fingers, hand, distance, amplitude, frequency,
@@ -107,6 +107,16 @@ LSsynthesizers.tpain = {
     if (hands.left && hands.right) {
       if (hands.left.isFist) {
         amplitude = 0;
+      }
+
+      if (hands.right.isFist) {
+        audio.vcf.frequency.value = 230;
+        audio.lfoGain.gain.value = 150;
+        audio.vcf.type = audio.vcf.ALLPASS;
+      } else {
+        audio.vcf.frequency.value = audio.vcf.frequency.defaultValue;
+        audio.lfoGain.gain.value = audio.lfoGain.gain.defaultValue;
+        audio.vcf.type = audio.vcf.LOWPASS;
       }
 
       if (frequency !== audio.currentFrequency) {
