@@ -2,7 +2,7 @@ window.LSInstruments = window.LSInstruments || {};
 
 LSInstruments.mouse = {
   name: "Mouse",
-  description: "Move your mouse across the page to make sweet sweet sounds.",
+  description: "Move your mouse across the page to make sweet sweet sounds.<br>Use the Ctrl and Alt keys to close your virtual hands.",
   color: "info",
   init: function(context) {
     var
