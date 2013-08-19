@@ -1,7 +1,7 @@
 window.LSsynthesizers = window.LSsynthesizers || {};
 
 LSsynthesizers.tpain = {
-  name: "Evil T-Pain",
+  name: "T-Pain",
   description: "Leap it like T-Pain! This synthesizer makes it impossible to play nonstandard notes.",
   color: "warning",
   handleHands: function(hands, audio) {
