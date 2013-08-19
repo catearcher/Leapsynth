@@ -35,6 +35,7 @@ var LS = (function() {
       __audio.lfo.type = __audio.lfo.SINE;
       __audio.vcf.frequency.value = __audio.vcf.frequency.defaultValue;
       __audio.lfoGain.gain.value = __audio.lfoGain.gain.defaultValue;
+      __audio.vcf.type = __audio.vcf.LOWPASS;
     },
     setAmplitude: function(value) {
       var time = __audio.context.currentTime;

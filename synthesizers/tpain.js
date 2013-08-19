@@ -113,8 +113,10 @@ LSsynthesizers.tpain = {
 
       if (hands.right.isFist) {
         audio.lfoGain.gain.value = 150;
+        audio.vcf.type = audio.vcf.ALLPASS;
       } else {
         audio.lfoGain.gain.value = audio.lfoGain.gain.defaultValue;
+        audio.vcf.type = audio.vcf.HIGHPASS;
       }
 
       if (frequency !== audio.currentFrequency) {
