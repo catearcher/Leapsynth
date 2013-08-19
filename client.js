@@ -116,12 +116,14 @@ var LS = (function() {
     __audio.init(new AudioContext());
   },
   init = function() {
+    var leapController = new Leap.Controller({enableGestures: false});
+
     initAudio();
     attachDomHandlers();
     activateHandsHandler("tpain");
     createHandsHandlersButtons();
 
-    Leap.loop({enableGestures: false}, function(frame) {
+    leapController.on("frame", function(frame) {
       var hands = frame.hands;
 
       if (hands.length) {
@@ -148,6 +150,8 @@ var LS = (function() {
 
       __activeHandsHandler.handleHands(__hands, __audio);
     });
+
+    leapController.connect();
   };
 
 
