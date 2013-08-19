@@ -12,14 +12,12 @@ LSInstruments.mouse = {
     $(document).on("mousemove", function(e) {
       updateHand("left", {
         position: [-30, e.screenX, 0],
-        fingers: 5,
-        isFist: false
+        fingers: e.ctrlKey ? 0 : 5
       });
 
       updateHand("right", {
         position: [30, e.screenY, 0],
-        fingers: 5,
-        isFist: false
+        fingers: e.altKey ? 0 : 5
       });
 
 
