@@ -66,6 +66,8 @@ var LS = (function() {
 
     if (__activeSynthesizer.color) {
       $panel.addClass("panel-" + __activeSynthesizer.color);
+    } else {
+      $panel.addClass("panel-default");
     }
 
     $panel.find(".active-synthesizer-name").text(__activeSynthesizer.name);
@@ -93,6 +95,8 @@ var LS = (function() {
 
     if (__activeInstrument.color) {
       $panel.addClass("panel-" + __activeInstrument.color);
+    } else {
+      $panel.addClass("panel-default");
     }
 
     $panel.find(".active-instrument-name").text(__activeInstrument.name);
