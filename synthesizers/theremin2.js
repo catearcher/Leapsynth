@@ -14,17 +14,29 @@ LSsynthesizers.theremin2 = {
       $fingers = $("#" + which + "-hand-fingers");
 
       if (hand) {
-        $handPosition.html("Position der Hand: " + hand.position.join(" / "));
-        $fingers.html("Anzahl der Finger: " + hand.fingers);
+        if (hand.position) {
+          distance = hand.position[1];
+          $handPosition.html("Position der Hand: " + hand.position.join(" / "));
+        }
 
-        distance = hand.position[1];
+        if (hand.fingers) {
+          $fingers.html("Anzahl der Finger: " + hand.fingers);
+        }
 
         if (which === "left") {
-          amplitude = 4 - (distance / 100);
-          amplitude = Math.round(10*amplitude) / 10;
+          if (hand.amplitude) {
+            amplitude = hand.amplitude;
+          } else {
+            amplitude = 4 - (distance / 100);
+            amplitude = Math.round(10*amplitude) / 10;
+          }
         } else {
-          frequency = 800 - distance;
-          frequency = Math.round(Math.pow(2, (frequency / 8 - 69) / 12) * 440);
+          if (hand.frequency) {
+            frequency = hand.frequency;
+          } else {
+            frequency = 800 - distance;
+            frequency = Math.round(Math.pow(2, (frequency / 8 - 69) / 12) * 440);
+          }
         }
       } else {
         $handPosition.empty();
