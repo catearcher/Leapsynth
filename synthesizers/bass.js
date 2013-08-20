@@ -48,29 +48,41 @@ LSsynthesizers.bass = {
       $fingers = $("#" + which + "-hand-fingers");
 
       if (hand) {
-        $handPosition.html("Position der Hand: " + hand.position.join(" / "));
-        $fingers.html("Anzahl der Finger: " + hand.fingers);
+        if (hand.position) {
+          distance = hand.position[1];
+          $handPosition.html("Position der Hand: " + hand.position.join(" / "));
+        }
 
-        distance = hand.position[1];
+        if (hand.fingers) {
+          $fingers.html("Anzahl der Finger: " + hand.fingers);
+        }
 
         if (which === "left") {
-          amplitude = 4 - (distance / 100);
-          amplitude = Math.round(10*amplitude) / 10;
+          if (hand.amplitude) {
+            amplitude = hand.amplitude;
+          } else {
+            amplitude = 4 - (distance / 100);
+            amplitude = Math.round(10*amplitude) / 10;
+          }
         } else {
-          frequency = 500 - distance;
-          frequency = Math.round(Math.pow(2, (frequency / 20 - 29) / 12) * 440);
+          if (hand.frequency) {
+            frequency = hand.frequency;
+          } else {
+            frequency = 500 - distance;
+            frequency = Math.round(Math.pow(2, (frequency / 20 - 29) / 12) * 440);
 
-          for (i = 0; i < noteFrequencies.length; i++) {
-            if (noteFrequencies[i][1] > frequency) {
-              if (i > 0 && noteFrequencies[i][1] - frequency > frequency - noteFrequencies[i-1][1]) {
-                frequency = noteFrequencies[i-1][1];
-                frequencyDescription = "(" + noteFrequencies[i-1][0] + ")";
-              } else {
-                frequency = noteFrequencies[i][1];
-                frequencyDescription = "(" + noteFrequencies[i][0] + ")";
+            for (i = 0; i < noteFrequencies.length; i++) {
+              if (noteFrequencies[i][1] > frequency) {
+                if (i > 0 && noteFrequencies[i][1] - frequency > frequency - noteFrequencies[i-1][1]) {
+                  frequency = noteFrequencies[i-1][1];
+                  frequencyDescription = "(" + noteFrequencies[i-1][0] + ")";
+                } else {
+                  frequency = noteFrequencies[i][1];
+                  frequencyDescription = "(" + noteFrequencies[i][0] + ")";
+                }
+
+                break;
               }
-
-              break;
             }
           }
         }
