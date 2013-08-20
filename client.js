@@ -33,6 +33,7 @@ var LS = (function() {
     loadDefaults: function() {
       __audio.vco.type = __audio.vco.SINE;
       __audio.lfo.type = __audio.lfo.SINE;
+      __audio.lfo.frequency.value = __audio.lfo.frequency.defaultValue;
       __audio.vcf.frequency.value = __audio.vcf.frequency.defaultValue;
       __audio.lfoGain.gain.value = __audio.lfoGain.gain.defaultValue;
       __audio.vcf.type = __audio.vcf.LOWPASS;
@@ -165,7 +166,7 @@ var LS = (function() {
     attachDomHandlers();
     createsynthesizersButtons();
     createInstrumentsButtons();
-    activateSynthesizer("tpain");
+    activateSynthesizer("bass");
     activateInstrument("leapmotion");
   };
 
