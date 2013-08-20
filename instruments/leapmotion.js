@@ -5,7 +5,7 @@ window.LSInstruments = window.LSInstruments || {};
 
   LSInstruments.leapmotion = {
     name: "Leap Motion",
-    description: "Play LeapSynth the way it was meant to be played: With a Leap Motion Controller.",
+    description: "Play LeapSynth the way it was meant to be played: With a Leap Motion Controller. For most synthesizers, your left hand controls the amplitude and your right hand the frequency of the sound.",
     color: "success",
     init: function(context) {
       var
