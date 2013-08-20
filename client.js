@@ -166,7 +166,7 @@ var LS = (function() {
     attachDomHandlers();
     createsynthesizersButtons();
     createInstrumentsButtons();
-    activateSynthesizer("bass");
+    activateSynthesizer("tpainevil");
     activateInstrument("leapmotion");
   };
 
